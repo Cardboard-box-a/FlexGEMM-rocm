@@ -20,15 +20,15 @@ else:
         IS_HIP = True
 
 if not IS_HIP:
-    cc_flag = ["--use_fast_math"]
+    cc_flag = ["--use_fast_math", "-allow-unsupported-compiler"]
 else:
     archs = os.getenv("GPU_ARCHS", "native").split(";")
     cc_flag = [f"--offload-arch={arch}" for arch in archs]
 
 if platform.system() == "Windows":
     extra_compile_args = {
-        "cxx": ["/O2", "/std:c++17", "/EHsc", "/openmp"],
-        "nvcc": ["-O3", "-std=c++17"] + cc_flag,
+        "cxx": ["/O2", "/std:c++17", "/EHsc", "/openmp", "/permissive-", "/Zc:__cplusplus"],
+        "nvcc": ["-O3", "-std=c++17", "-Xcompiler=/std:c++17", "-Xcompiler=/EHsc", "-Xcompiler=/permissive-", "-Xcompiler=/Zc:__cplusplus"] + cc_flag,
     }
 else:
     # Match PyTorch's CXX11 ABI setting
