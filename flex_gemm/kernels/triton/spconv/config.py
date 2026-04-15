@@ -2,7 +2,7 @@ import triton
 from ..utils import get_autotune_config
 
 
-allow_tf32 = True
+allow_tf32 = False  # ROCm fix: AMD does not support tf32, only ieee
 USE_ON_THE_FLY_WEIGHT_TRANSPOSE = True
 
 

@@ -90,7 +90,7 @@ def sparse_conv_fwd_masked_implicit_gemm_kernel(
         weight_block = tl.load(weight_ptr, mask=k_mask[:, None], other=0.0)
         # Accumulate along the K dimension.
         accumulator = tl.dot(input_block, weight_block, accumulator,
-                             input_precision='tf32' if allow_tf32 else 'ieee')                      # (B1, B2)
+                             input_precision='ieee')                      # (B1, B2)
     c = accumulator.to(input.type.element_ty)
             
     # add bias
@@ -171,7 +171,7 @@ def sparse_conv_bwd_weight_masked_implicit_gemm_kernel(
         grad_output_block = tl.load(grad_output_ptr, mask=mask[None, :], other=0.0)
         # Accumulate along the K dimension.
         accumulator = tl.dot(grad_output_block, input_block, accumulator,
-                             input_precision='tf32' if allow_tf32 else 'ieee')                      # (B1, B2)
+                             input_precision='ieee')                      # (B1, B2)
         # Advance pointers.
         valid_signal_i_ptr += BK
         valid_signal_o_ptr += BK
